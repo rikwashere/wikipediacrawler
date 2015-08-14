@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
+import json
 import random
-import pickle
 import requests
 import datetime
 from bs4 import BeautifulSoup
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 		data['title'] = soup.title.string.split('-')[0]
 		data['revision_history'] = getRevHistory(soup)
 		print 'Populated %i/%i urls.' % (num, len(first_x))
-		print '\nSaving to file...'
 	
-	with open('wikipedia.p', 'wb') as pickle_out:
-			pickle.dump(urls, pickle_out)
+	with open('wikipedia.json', 'a') as json_out:
+		json.dump(urls, json_out)
+		json_out.write('\n')
