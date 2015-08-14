@@ -52,7 +52,7 @@ def getLinks(page, urls):
 	return urls
 		
 if __name__ == '__main__':
-	num_pages = 10
+	num_pages = 1000
 	root = 'https://en.wikipedia.org'
 	start_url = '/wiki/Main_page'
 	print '\nCrawling Wikipedia. Looking for %i urls.' % num_pages
