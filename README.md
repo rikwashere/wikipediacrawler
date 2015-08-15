@@ -9,7 +9,7 @@ Script to identify the most controversial wikipedia pages based on their revisio
   - Extract first 1000 revisions. √
   - Extract page title. √
 - Store data in file. √
-  - Dictionary: { URL : { CATEGORIES, REVISION HISTORY, TITLE, FIRST PARAGRAPH (x) } } √
+  - Dictionary: { URL : { CATEGORIES, (REVISION DATE, COMMENT), TITLE } } X
   - Write to Pickle. X
     - Wrote to JSON instead. √ 
 - Process data.
