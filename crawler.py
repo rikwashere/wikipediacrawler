@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import re
 import json
 import random
@@ -50,6 +51,11 @@ def getLinks(page, urls):
 			validated += 1
 	print '\t+ Found %i valid urls on "%s".' % (validated, page)
 	return urls
+
+def getComment(soup):
+	revisions = soup.find_all('span', { 'class' : 'comment'})
+	print revisions
+	return None
 		
 if __name__ == '__main__':
 	num_pages = 1000
@@ -69,17 +75,25 @@ if __name__ == '__main__':
 	print 'Crawled %i hyperlinks.' % len(urls.keys())
 
 	first_x = urls.keys()[:num_pages]
-	print '\nGathering data...'
+	print '\nGathering and storing data...'
+
+	if os.path.isfile('wikipedia.json'):
+		print 'Output file already exists. Overwrite?'
+		#ans = raw_input('Y/N')
+		#if ans.lower == 'y':
+		os.remove('wikipedia.json')
+	else:
+		print 'Saving to "wikipedia.json".'
 
 	for num, page in enumerate(first_x):
+		print '* Populating "%s".' % page
 		data = urls[page]
 		r = requests.get(page)
 		soup = BeautifulSoup(r.text, "html.parser")
 		data['categories'] = getCategories(soup)
 		data['title'] = soup.title.string.split('-')[0]
-		data['revision_history'] = getRevHistory(soup)
-		print 'Populated %i/%i urls.' % (num, len(first_x))
-	
-	with open('wikipedia.json', 'a') as json_out:
-		json.dump(urls, json_out)
-		json_out.write('\n')
+		data['revision_history'] = (getRevHistory(soup), getComment(soup))
+		with open('wikipedia.json', 'a') as json_out:
+			json.dump(urls[page], json_out)
+			json_out.write('\n')
+		print 'Populated %i/%i urls.' % (num, len(first_x))	
